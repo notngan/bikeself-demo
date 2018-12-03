@@ -6,7 +6,7 @@ import router from './router'
 import store from './store/store'
 import { firebaseListener } from './firebaseConfig'
 
-Vue.config.productionTip = true
+Vue.config.productionTip = false
 
 firebaseListener(authStatusChange)
 

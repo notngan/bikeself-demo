@@ -6,7 +6,7 @@
     :width="'210'"
     v-model="sideNav">
     <v-toolbar v-if="isSignedIn" flat>
-      <v-toolbar-title>{{ signedInUser.name }}!</v-toolbar-title>
+      <v-toolbar-title>{{ signedInUser.name }}</v-toolbar-title>
     </v-toolbar>
     <v-list>
       <v-list-tile
