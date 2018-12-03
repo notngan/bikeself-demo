@@ -2,6 +2,7 @@
   <div class="wrapper">
     <v-container grid-list-lg>
       <h2 class="font-weight-bold display-1">Rental Bikes</h2>
+      <bike-loading/>
       <v-layout mt-3 wrap>
         <v-flex
           v-for="bike in products"
@@ -17,10 +18,14 @@
 
 <script>
 import BikeItem from '../components/bike/BikeItem.vue'
+import BikeLoading from '../components/bike/BikeLoading.vue'
 import { mapGetters } from 'vuex'
 
 export default {
-  components: { BikeItem },
+  components: { 
+    BikeItem,
+    BikeLoading
+  },
   computed: {
     ...mapGetters(['products'])
   },

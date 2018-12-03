@@ -6,7 +6,7 @@
     :width="'210'"
     v-model="sideNav">
     <v-toolbar v-if="isSignedIn" flat>
-      <v-toolbar-title>Hi, {{ signedInUser.name }}!</v-toolbar-title>
+      <v-toolbar-title>{{ signedInUser.name }}!</v-toolbar-title>
     </v-toolbar>
     <v-list>
       <v-list-tile
@@ -48,19 +48,19 @@
         
         <!-- SIGN OUT -->
         <v-divider></v-divider>
-        <v-list-tile @click="openComfirm">
+        <v-list-tile @click="openConfirm">
           <v-list-tile-content>Sign out</v-list-tile-content>
           <v-list-tile-action><v-icon>exit_to_app</v-icon></v-list-tile-action>
-          <comfirm-dialog
+          <confirm-dialog
             :name="'sign out'"
-            :show-comfirm="showComfirmLocal"
-            @close="closeComfirm"
-            @comfirm="signout"/>
+            :show-confirm="showConfirmLocal"
+            @close="closeConfirm"
+            @confirm="signout"/>
         </v-list-tile>
       </template>
     </v-list>
   </v-navigation-drawer>
-  <!-- USER -->
+  <!-- NOT ADMIN -->
   <v-toolbar
     class="primary"
     fixed
@@ -117,41 +117,44 @@
       <v-btn flat slot="activator" :color="'rgba(0,0,0,0.7)'"><v-icon>person</v-icon><span v-if="isSignedIn"> &nbsp; &nbsp;{{ signedInUser.name }}</span></v-btn>
       
       <v-list>
-        <!-- INFO -->
-    
-        <v-list-tile :to="'/user/' + signedInUser.id" v-if="isSignedIn">
-          <v-list-tile-content>View profile</v-list-tile-content>
-          <v-list-tile-action><v-icon>info</v-icon></v-list-tile-action>
-        </v-list-tile>
+        <template v-if="isSignedIn">
+          <!-- INFO -->
+          <v-list-tile :to="'/user/' + signedInUser.id">
+            <v-list-tile-content>View profile</v-list-tile-content>
+            <v-list-tile-action><v-icon>info</v-icon></v-list-tile-action>
+          </v-list-tile>
 
-        <!-- SIGN OUT -->
-        <v-list-tile @click="openComfirm" v-if="isSignedIn">
-          <v-list-tile-content>Sign out</v-list-tile-content>
-          <v-list-tile-action><v-icon>exit_to_app</v-icon></v-list-tile-action>
-          <comfirm-dialog
-            :name="'sign out'"
-            :show-comfirm="showComfirmLocal"
-            @close="closeComfirm"
-            @comfirm="signout"/>
-        </v-list-tile>
+          <!-- SIGN OUT -->
+          <v-list-tile @click="openConfirm">
+            <v-list-tile-content>Sign out</v-list-tile-content>
+            <v-list-tile-action><v-icon>exit_to_app</v-icon></v-list-tile-action>
+            <confirm-dialog
+              :name="'sign out'"
+              :show-confirm="showConfirmLocal"
+              @close="closeConfirm"
+              @confirm="signout"/>
+          </v-list-tile>
+        </template>
 
+        <template v-if="!isSignedIn">
         <!-- SIGN IN  -->
-        <v-list-tile v-if="!isSignedIn" @click="openSignIn">
-          <v-list-tile-content>Sign in</v-list-tile-content>
-          <v-list-tile-action><v-icon>person</v-icon></v-list-tile-action>
-          <v-dialog :max-width="'500px'" v-model="showSignInLocal">
-            <sign-in-form/>
-          </v-dialog>
-        </v-list-tile>
-        
-        <!-- SIGN UP  -->
-        <v-list-tile v-if="!isSignedIn" @click="openSignUp">
-          <v-list-tile-content>Sign up</v-list-tile-content>
-          <v-list-tile-action><v-icon>person_add</v-icon></v-list-tile-action>
-          <v-dialog :max-width="'500px'" v-model="showSignUpLocal">
-            <sign-up-form/>
-          </v-dialog>
-        </v-list-tile>
+          <v-list-tile @click="openSignIn">
+            <v-list-tile-content>Sign in</v-list-tile-content>
+            <v-list-tile-action><v-icon>person</v-icon></v-list-tile-action>
+            <v-dialog :max-width="'500px'" v-model="showSignInLocal">
+              <sign-in-form/>
+            </v-dialog>
+          </v-list-tile>
+          
+          <!-- SIGN UP  -->
+          <v-list-tile @click="openSignUp">
+            <v-list-tile-content>Sign up</v-list-tile-content>
+            <v-list-tile-action><v-icon>person_add</v-icon></v-list-tile-action>
+            <v-dialog :max-width="'500px'" v-model="showSignUpLocal">
+              <sign-up-form/>
+            </v-dialog>
+          </v-list-tile>
+        </template>
       </v-list>
     </v-menu>
 
@@ -190,7 +193,7 @@
 <script>
 import SignInForm from './user/SignInForm.vue'
 import SignUpForm from './user/SignUpForm.vue'
-import ComfirmDialog from './user/ComfirmDialog.vue'
+import ConfirmDialog from './user/ConfirmDialog.vue'
 // import appMessage from './Message.vue'
 
 import { mapGetters, mapActions } from 'vuex'
@@ -199,7 +202,7 @@ export default {
   components: { 
     SignInForm, 
     SignUpForm, 
-    ComfirmDialog, 
+    ConfirmDialog, 
     // appMessage
   },
   data () {
@@ -216,7 +219,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAdmin','isSignedIn', 'signedInUser', 'showSignIn', 'showSignUp', 'showComfirm', 'bookings']),
+    ...mapGetters(['isAdmin','isSignedIn', 'signedInUser', 'showSignIn', 'showSignUp', 'showConfirm', 'bookings']),
     showSignInLocal: {
       get () {
         return this.showSignIn
@@ -233,12 +236,12 @@ export default {
         return this.displaySignUp(value)
       } 
     },
-    showComfirmLocal: {
+    showConfirmLocal: {
       get () {
-        return this.showComfirm
+        return this.showConfirm
       },
       set (value) {
-        return this.displayComfirm(value)
+        return this.displayConfirm(value)
       } 
     },
     notAdmin () {
@@ -253,16 +256,17 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['signUserOut', 'displaySignIn', 'displaySignUp', 'displayComfirm']),
+    ...mapActions(['signUserOut', 'displaySignIn', 'displaySignUp', 'displayConfirm', 'displayLoading']),
 
     signout () {
+      this.displayLoading(true)
       this.signUserOut()
     }, 
-    closeComfirm () {
-      this.displayComfirm(false)
+    closeConfirm () {
+      this.displayConfirm(false)
     },
-    openComfirm () {
-      this.displayComfirm(true)
+    openConfirm () {
+      this.displayConfirm(true)
     },
     openSignIn () {
       this.displaySignIn(true)

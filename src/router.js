@@ -138,11 +138,11 @@ const router = new Router({
       // props: true
     },
     {
-      path: '/checkout/comfirm/:id',
-      name: 'checkoutComfirm',
-      component: () => import('./views/booking/CheckoutComfirm'),
+      path: '/checkout/confirm/:id',
+      name: 'checkoutConfirm',
+      component: () => import('./views/booking/CheckoutConfirm'),
       meta: {
-        title: 'Checkout Comfirm'
+        title: 'Checkout Confirm'
       }
       // props: true
     },

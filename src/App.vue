@@ -4,12 +4,15 @@
     
     <v-toolbar flat></v-toolbar>
 
+    <app-loading/>
+    
     <router-view/>
     
     <app-footer/>
     
     <app-message/>
-  
+
+    
   </v-app>
 </template>
 
@@ -20,15 +23,16 @@
 import AppFooter from './components/Footer.vue'
 import AppHeader from './components/Header.vue'
 import AppMessage from './components/Message.vue'
+import AppLoading from './components/Loading.vue'
 
 import { mapGetters, mapActions } from 'vuex' 
-
 
 export default {
   components: {
     AppFooter, 
     AppHeader,
-    AppMessage
+    AppMessage,
+    AppLoading
   },
   
   data () {

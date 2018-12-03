@@ -1,8 +1,8 @@
 <template>
   <v-dialog
-    v-model="showComfirm"
+    v-model="showConfirm"
     max-width="280"
-  >
+    >
     <v-card>
       <v-card-title class="subheading">Do you really want to {{ name }}?</v-card-title>
       <v-divider></v-divider>
@@ -13,7 +13,7 @@
         <v-btn
           color="error"
           flat
-          @click="comfirm"
+          @click="confirm"
         >
           {{ name }}
         </v-btn>
@@ -24,10 +24,10 @@
 
 <script> 
 export default {
-  props: ['name', 'showComfirm'],
+  props: ['name', 'showConfirm'],
   methods: {
-    comfirm () {
-      this.$emit('comfirm')
+    confirm () {
+      this.$emit('confirm', this.showConfirm)
     },
     close () {
       this.$emit('close')

@@ -53,12 +53,14 @@ export default {
     ...mapGetters(['messages']),
   },
   methods: {
-    ...mapActions(['signUserIn', 'displaySignUp', 'displaySignIn']),
+    ...mapActions(['signUserIn', 'displaySignUp', 'displaySignIn', 'displayLoading', 'displayConfirm']),
     onSignIn () {
+      this.displayLoading(true)
       this.signUserIn({
         email: this.email,
         password: this.password
       })
+      this.displayConfirm(false)
       this.displaySignIn(false)
     },
     openSignUp () {

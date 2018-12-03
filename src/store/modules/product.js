@@ -10,7 +10,8 @@ const state = {
     // description: 'This is a very awesome bike which is very awesome.',
     // ///quantity: 2
     // }
-  ]
+  ],
+  bikeLoading: true
 }
 
 const mutations = {
@@ -34,11 +35,16 @@ const mutations = {
     let record = state.productList.find(item => item.id == payload.id)
     record.show = true
     //console.log(record)
+  },
+  'DISPLAY_BIKE_LOADING' (state, payload) {
+    state.bikeLoading = payload
   }
 }
 
 const actions = {
-
+  displayBikeLoading({commit}, payload) {
+    commit('DISPLAY_BIKE_LOADING', payload)
+  }
 }
 
 const getters = {
@@ -52,6 +58,9 @@ const getters = {
         return bike.id === bikeId
       })
     }
+  },
+  isBikeLoading (state) {
+    return state.bikeLoading
   }
 }
 

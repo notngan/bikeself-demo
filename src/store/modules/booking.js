@@ -44,7 +44,7 @@ const mutations = {
   'SAVE_TRANSACTION' (state, payload) {
     state.transactionList.push(payload)
     //console.log('transaction saved')
-    router.push('/checkout/comfirm/' + payload.id)
+    router.push('/checkout/confirm/' + payload.id)
   },
 
   'LOAD_TRANSACTION_LIST' (state, payload) {
@@ -81,9 +81,9 @@ const getters = {
     }
   },
   
-  isLoading (state) {
-    return state.loading
-  }
+  // isLoading (state) {
+  //   return state.loading
+  // }
 }
 
 export default {

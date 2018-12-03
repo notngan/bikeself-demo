@@ -8,8 +8,7 @@
         <v-card-text class="error--text">
           {{ messages.message }}
         </v-card-text>
-        <form @submit.prevent="onSignUp">
-          
+        <v-form lazy-validation @submit.prevent="onSignUp">
           <v-card-text>
             <v-layout column>
               <v-flex>
@@ -52,7 +51,7 @@
             <v-btn @click="openSignIn" flat>Sign in</v-btn>
             <v-btn type="submit" class="primary black--text">Create an Account</v-btn>
           </v-card-actions>
-        </form>
+        </v-form>
       </v-container>
     </v-card>
 </template>
@@ -75,17 +74,19 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['signUserUp', 'displaySignUp', 'displaySignIn']),
+    ...mapActions(['signUserUp', 'displaySignUp', 'displaySignIn', 'displayConfirm', 'displayLoading']),
     onSignUp () {
       if(this.password !== this.confirmPassword) {
         return
       } else {
+        this.displayLoading(true)
         this.signUserUp({
           email: this.email, 
           password: this.password,
           name: this.name
         })
         this.displaySignUp(false)
+        this.displayConfirm(false)
       }
     },
     openSignIn () {

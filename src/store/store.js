@@ -10,7 +10,7 @@ import message from './modules/message'
 import product from './modules/product'
 import booking from './modules/booking'
 import admin from './modules/admin'
-import service from './modules/service'
+import tour from './modules/tour'
 
 Vue.use(Vuex)
 
@@ -21,22 +21,21 @@ export default new Vuex.Store({
     product,
     booking,
     admin,
-    service
+    tour
   },
   actions: {
     // AUTH
-    signUserUp ({commit}, payload) {
-      
+    signUserUp ({commit}, payload) {   
       // create user
       firebaseAuth().createUserWithEmailAndPassword(payload.email, payload.password)
       .then(data => {
-        
         // save to database
         database.ref('users' ).child(data.user.uid).set({
           name: payload.name, 
           email: payload.email,
           isAdmin: false
         }).then(() => {
+          commit('DISPLAY_LOADING', false)
           //console.log('user saved')
         }).catch( error => {
           console.log(error)
@@ -68,7 +67,7 @@ export default new Vuex.Store({
     signUserIn ({commit}, payload) {
       firebaseAuth().signInWithEmailAndPassword(payload.email, payload.password)
       .then(() => {
-        //console.log(data.user)
+        commit('DISPLAY_LOADING', false)
       })
       .catch(error => {
         commit('ADD_MESSAGE', error)
@@ -82,9 +81,9 @@ export default new Vuex.Store({
         console.log(error)
       })
     },
-    signUserOut () {
+    signUserOut ({commit}) {
       firebaseAuth().signOut().then(() => {
-        //console.log('signed out')
+        commit('DISPLAY_LOADING', false)
       })
     },
     loadUserList ({commit}) {
@@ -114,8 +113,8 @@ export default new Vuex.Store({
     displaySignUp ({commit}, payload) {
       commit('DISPLAY_SIGN_UP', payload)
     },
-    displayComfirm ({commit}, payload) {
-      commit('DISPLAY_COMFIRM', payload)
+    displayConfirm ({commit}, payload) {
+      commit('DISPLAY_CONFIRM', payload)
     },
     
     // PRODUCT
@@ -136,7 +135,7 @@ export default new Vuex.Store({
           })
         }
         commit('UPDATE_PRODUCT_LIST', bikes)
-        
+        commit('DISPLAY_BIKE_LOADING', false)
        // console.log(bikes)
       }).catch((error) => {
         console.log(error)
@@ -221,6 +220,7 @@ export default new Vuex.Store({
           })
         }
         commit('LOAD_ARTICLE_LIST', tours)
+        commit('DISPLAY_TOUR_LOADING', false)
         //console.log(tours)
       }).catch((error) => {
         console.log(error)

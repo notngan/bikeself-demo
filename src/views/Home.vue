@@ -3,16 +3,17 @@
 
     <v-content>
       <home-banner/>
-
       <!-- BIKES -->
       <section id="home-popular">
         <v-container grid-list-lg>
+           
           <v-layout align-center fill-height justify-space-between>
             <h2 class="font-weight-bold display-1">Popular Bikes</h2>
             <v-btn flat small :to="'/rentals'"> View all
               <v-icon small>keyboard_arrow_right</v-icon>
             </v-btn>
           </v-layout>
+          <bike-loading v-if="isBikeLoading"/>
           <v-layout mt-3 wrap>
             <v-flex 
               v-for="bike in products"
@@ -53,6 +54,7 @@
               <v-icon small>keyboard_arrow_right</v-icon>
             </v-btn>
           </v-layout>
+          <tour-loading/>
           <v-layout wrap>
             <v-flex
               xs12 sm6
@@ -73,9 +75,19 @@ import BikeItem from '.././components/bike/BikeItem.vue'
 import ServiceItem from '../components/service/ServiceItem.vue'
 import TourItem from '.././components/tour/TourItem.vue'
 import HomeBanner from '.././components/HomeBanner.vue'
+import BikeLoading from '.././components/bike/BikeLoading.vue'
+import TourLoading from '.././components/tour/TourLoading.vue'
+
 import { mapGetters } from 'vuex'
 export default {
-  components: { HomeBanner, BikeItem, ServiceItem, TourItem },
+  components: { 
+    HomeBanner, 
+    BikeItem, 
+    ServiceItem, 
+    TourItem, 
+    BikeLoading,
+    TourLoading
+  },
   data () { 
     return {
       services: [
@@ -104,7 +116,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['products',  'articles'])
+    ...mapGetters(['products',  'articles', 'isBikeLoading'])
    
   }
 }

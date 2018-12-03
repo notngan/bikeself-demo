@@ -4,7 +4,8 @@ const state = {
     message: '',
     show: false
   },
-  timeoutEvent: null
+  timeoutEvent: null,
+  loading: false
 }
 
 const mutations = {
@@ -32,6 +33,9 @@ const mutations = {
       message: '',
       show: false
 		}
+  },
+  'DISPLAY_LOADING' (state, payload) {
+    state.loading = payload
   }
 }
 
@@ -42,12 +46,18 @@ const actions = {
   },
   clearMessage({commit}) {
     commit('CLEAR_MESSAGE')
+  },
+  displayLoading({commit}, payload) {
+    commit('DISPLAY_LOADING', payload)
   }
 }
 
 const getters = {
   messages: (state) => {
     return state.messageGroup
+  },
+  isLoading: (state) => {
+    return state.loading
   }
 }
 export default {
