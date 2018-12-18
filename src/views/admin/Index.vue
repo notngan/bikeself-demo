@@ -111,7 +111,7 @@ export default {
       deleteDialog: false,
       unhideDialog: false,
       headers: [
-        { text: 'ID', value: 'id'},
+        { text: 'ID', value: 'id' },
         { text: 'Title', value: 'title' },
         { text: 'Price($)', value: 'price' },
         { text: 'Quantity', value: 'quantity' },
@@ -138,7 +138,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isSignedIn', 'currentUser', 'products']),
+    ...mapGetters(['isSignedIn', 'products']),
     // currentUser () {
     //   return this.userById(this.signedInUser.id)
     // }
@@ -155,13 +155,11 @@ export default {
         this.$router.push('/admin/login')
       }
     },
-    currentUser (val) {
-      if(val.isAdmin == false) {
-        this.$router.push('/admin/login')
-        this.addMessage({
-          class: 'error',
-          message: 'Please sign in with admin account!'
-        })
+    user (val) {
+      if (val) {
+        if (val.isAdmin == false) {
+          this.$router.push('/admin/login')
+        }
       }
     }
 

@@ -51,6 +51,10 @@ const getters = {
   products (state) {
     return state.productList
   },
+
+  popularProducts (state) {
+    return state.productList.slice(0,4)
+  },
   
   bikeById (state) {
     return (bikeId) => {

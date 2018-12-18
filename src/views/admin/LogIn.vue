@@ -1,6 +1,6 @@
 <template>
   <v-layout class="wrapper" justify-center align-center>
-    <v-flex xs10 sm4>
+    <v-flex xs10 sm8 md4>
       <v-card>
         <v-container>
           <v-card-title>
@@ -11,7 +11,6 @@
 
           <form @submit.prevent="onLogIn">
             <v-text-field
-              name="email"
               outline
               label="Email"
               v-model="email"
@@ -20,7 +19,6 @@
               ></v-text-field>
 
             <v-text-field
-              name="password"
               outline
               label="Password"
               v-model="password"
@@ -45,58 +43,48 @@ export default {
     return {
       email: null,
       password: null,
-      user: {}
-
+      user: null
     }
   }, 
   computed: {
-    ...mapGetters(['currentUser', 'isSignedIn', 'userByEmail']),
-
-    // user () {
-    //   return this.userByEmail(this.email)
-    // }
-    // user () {
-    //   return this.userById(this.id)
-    // }
+    ...mapGetters(['isAdmin', 'signedInUser', 'userByEmail', 'isSignedIn']),
   },
   watch: {
-    currentUser (val) {
-      if (val) {
-        if (val.isAdmin == true && this.isSignedIn) {
-          this.$store.commit('SET_ADMIN', true)
-          this.$router.push('/admin')
+    isAdmin (val) {
+      if (val == true) {
+        if (this.$router.currentRoute.query.redirect) {
+          this.$router.push(this.$router.currentRoute.query.redirect)
         } else {
-          this.addMessage({
-            class: 'error',
-            message: 'Please sign in with admin account!'
-          })
+          this.$router.push('/admin')
         }
+      } else {
+        this.$router.push('/admin/login')
       }
-    }
+    },
+    // isSignedIn (val) {
+    //   if (val) {
+    //    if (this.$router.currentRoute.query.redirect) {
+    //       this.$router.push(this.$router.currentRoute.query.redirect)
+    //     } else {
+    //       this.$router.push('/admin')
+    //     }
+    //   } else {
+    //     this.$router.push('/admin/login')
+    //   }
+    // }
   },
 
   mounted () {
-  
   },
 
   methods: {
-    ...mapActions(['signUserOut','addMessage','logAdminIn']),
+    ...mapActions(['clearMessage', 'addMessage','logAdminIn', 'signUserOut']),
     onLogIn () {
-      this.user = this.userByEmail(this.email)
-      if (this.user.isAdmin == false) {
-        this.addMessage({
-          class: 'error',
-          message: 'Please sign in with admin account!'
-        })
-        return 
-      } else {
-        this.logAdminIn({
-          email: this.email, 
-          password: this.password,
-        })
-      }
-    },
-    
+      this.logAdminIn({
+        email: this.email, 
+        password: this.password,
+      })
+    }
   }
 }
 </script>

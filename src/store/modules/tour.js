@@ -28,6 +28,10 @@ const getters = {
 		return state.articleList
 	},
 
+	popularArticles (state) {
+		return state.articleList.slice(0,4);
+	},
+
 	tourById (state) {
     return (id) => {
       return state.articleList.find((tour) => {

@@ -16,7 +16,7 @@
           <bike-loading v-if="isBikeLoading"/>
           <v-layout mt-3 wrap>
             <v-flex 
-              v-for="bike in products"
+              v-for="bike in popularProducts"
               :key="bike.id"
               mb-1
               xs12 sm6 md4 lg3>
@@ -50,7 +50,7 @@
         <v-container grid-list-lg>
           <v-layout mb-3 align-center fill-height justify-space-between>
             <h2 class="font-weight-bold display-1">Self-guided Tours</h2>
-            <v-btn flat small :to="'/rentals'"> View all
+            <v-btn flat small :to="'/tours'"> View all
               <v-icon small>keyboard_arrow_right</v-icon>
             </v-btn>
           </v-layout>
@@ -58,7 +58,7 @@
           <v-layout wrap>
             <v-flex
               xs12 sm6
-              v-for="tour in articles"
+              v-for="tour in popularArticles"
               :key="tour.title"
             >
               <tour-item :tour="tour"/>
@@ -116,7 +116,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['products',  'articles', 'isBikeLoading'])
+    ...mapGetters(['popularProducts',  'popularArticles', 'isBikeLoading'])
    
   }
 }

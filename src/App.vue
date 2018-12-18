@@ -24,7 +24,6 @@ import AppFooter from './components/Footer.vue'
 import AppHeader from './components/Header.vue'
 import AppMessage from './components/Message.vue'
 import AppLoading from './components/Loading.vue'
-
 import { mapGetters, mapActions } from 'vuex' 
 
 export default {
@@ -52,7 +51,16 @@ export default {
           message: 'You have signed in successfully!'
         })
       }
-    }
+    }, 
+
+    // user (val) {
+    //   if (val) {
+    //     console.log(val)
+    //     if (val.isAdmin == true) {
+    //       this.$store.commit('SET_ADMIN', true)
+    //     }
+    //   }
+    // }
   }, 
 
   methods: {

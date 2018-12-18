@@ -3,7 +3,7 @@
 const state = {
 	userList: [],
 	isAdmin: false,
-
+	user: null
 }
 
 const mutations = {
@@ -28,19 +28,17 @@ const getters = {
 	users (state) {
 		return state.userList
 	},
-
-	currentUser (state, getters) {
-		return state.userList.find((user) => {
-			return (user.id === getters.signedInUser.id)
-		})
-	},
+	// user (getters) {
+	// 	return getters.userByEmail(getters.signedInUser.email)
+	// },
 	userByEmail (state) {
 		return (email) => {
 			return state.userList.find((user) => {
 				return user.email === email
 			})
 		}
-	}
+	},
+
 	// bookingById (state) {
   //   return (id) => {
   //     return state.bookingList.find((booking) => {

@@ -41,21 +41,11 @@ export default new Vuex.Store({
           console.log(error)
         })
         commit('CLEAR_MESSAGE')
-        // const foo = {
-        //   id: data.user.uid,
-        //   email: data.user.email,
-        // }
-        // update user
         data.user.updateProfile({
           displayName: payload.name
         }).then(() => {
-          // const newUser = {
-          //   ...foo,
-          //   name: data.user.displayName
-          // }
          //console.log(data.user)
-          
-          }).catch(error => {
+        }).catch(error => {
           console.log(error)
         })
       })
@@ -73,10 +63,21 @@ export default new Vuex.Store({
         commit('ADD_MESSAGE', error)
       })
     },
-    logAdminIn({commit}, payload) {
-      firebaseAuth().signInWithEmailAndPassword(payload.email, payload.password).then(() => {
-        commit('SET_ADMIN', true)
-        //router.push('/admin')
+    logAdminIn({commit, getters}, payload) {
+      firebaseAuth().signInWithEmailAndPassword(payload.email, payload.password).then((value) => {
+        const user = getters.userByEmail(value.user.email)
+        if (user.isAdmin == true) {
+          commit('SET_ADMIN', true)
+          //console.log(user.isAdmin)
+        } else {
+          firebaseAuth().signOut().then(() => {
+            commit('ADD_MESSAGE', {
+              message: 'Please log in with admin account',
+              class: 'error'
+            })
+          })
+          return
+        }
       }).catch( error => {
         console.log(error)
       })
@@ -84,6 +85,7 @@ export default new Vuex.Store({
     signUserOut ({commit}) {
       firebaseAuth().signOut().then(() => {
         commit('DISPLAY_LOADING', false)
+        commit('SET_ADMIN', false)
       })
     },
     loadUserList ({commit}) {
@@ -198,7 +200,7 @@ export default new Vuex.Store({
           id: key,
           ...payload 
         })
-        //console.log(payload)
+        console.log(payload)
       }).catch((error) => {
         console.log(error)
       })
@@ -211,12 +213,10 @@ export default new Vuex.Store({
         for (let key in object) {
           tours.push({
             id: key,
+            content: object[key].content,
             title: object[key].title,
             author: object[key].author,
             date: object[key].date,
-            description: object[key].description, 
-            image: object[key].image,
-            sections: object[key].sections
           })
         }
         commit('LOAD_ARTICLE_LIST', tours)

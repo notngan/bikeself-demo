@@ -1,6 +1,6 @@
 module.exports = {
   baseUrl: '/',
-  configureWebpack: {
-    mode: 'production'
-  }
+  // configureWebpack: {
+  //   mode: 'production'
+  // }
 }

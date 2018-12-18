@@ -166,15 +166,17 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (store.getters.isSignedIn == false) {
+    if (store.getters.isAdmin == false) {
       next({
         path: '/admin/login',
         query: { redirect: to.fullPath }
       })
     } else {
-      next ()
+      next()
     }
-  } else { next() }
+  } else { 
+    next() 
+  }
   document.title = to.meta.title
   next()
 })
